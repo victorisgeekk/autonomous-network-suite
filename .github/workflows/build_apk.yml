@@ -33,7 +33,7 @@ jobs:
             libreadline-dev libsqlite3-dev zlib1g-dev pkg-config \
             openjdk-17-jdk ant mercurial patch
 
-      - name: Install Android SDK Build-Tools & Platforms
+      - name: Install Android SDK & Accept Licenses
         run: |
           export ANDROID_HOME=$HOME/.android/android-sdk
           mkdir -p $ANDROID_HOME/cmdline-tools
@@ -45,11 +45,13 @@ jobs:
           mv temp_cmdline/cmdline-tools/* $ANDROID_HOME/cmdline-tools/latest/
           rm -rf commandlinetools.zip temp_cmdline
           
-          # SDK Manager ဖြင့် aidl ပါဝင်သော build-tools, platform-tools နှင့် platforms များကို တပ်ဆင်ခြင်း
+          # SDK လိုင်စင်များအားလုံးကို အလိုအလျောက် သဘောတူလက်ခံခြင်း
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
+          
+          # Buildozer လိုအပ်မည့် SDK platforms နဲ့ build-tools များကို အစုံအလင် တပ်ဆင်ခြင်း
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-33" "build-tools;33.0.2"
           
-          # Buildozer က aidl ကို ရှာတွေ့နိုင်ရန် PATH ထဲသို့ build-tools ကို ထည့်သွင်းခြင်း
+          # Buildozer က ရှာတွေ့နိုင်ရန် Build-tools လမ်းကြောင်းကို ချိတ်ဆက်ပေးခြင်း
           echo "$ANDROID_HOME/build-tools/33.0.2" >> $GITHUB_PATH
 
       - name: Install Buildozer and Cython
