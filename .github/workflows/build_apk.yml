@@ -65,4 +65,3 @@ jobs:
         with:
           name: autonomous-suite-apk
           path: bin/*.apk
-          
